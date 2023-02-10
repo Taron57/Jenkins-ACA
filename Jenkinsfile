@@ -15,7 +15,7 @@ pipeline {
                     sh "docker run -tid -p 2222:80 my-image:${env.BUILD_ID}"
 //docker.image("my-image:${env.BUILD_ID}").withRun('-p 2222:80') {
 //* do things */
-//                        }
+//                         }
                   }  
              }
         }
