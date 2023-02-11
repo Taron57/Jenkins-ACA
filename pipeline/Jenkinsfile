@@ -3,39 +3,39 @@ pipeline {
     stages {
         stage('Build') { 
             steps {
-//                 script {
-//                 withCredentials([string(credentialsId: 'docker_user', verible: 'DOCKER_USER'),
-//                               string(credentialsId: 'docker_pass', verible: 'DOCKER_PASS')]) {
-//                 sh "echo ${DOCKER_PASS} | docker login --username ${DOCKER_USER} --password-stdin"
-//                 docker.withRegistry("https://index.docker.io/") {
-//                     def customImage = docker.build("${DOCKER_USER}/my-image:${env.BUILD_ID}", "-f nginx/Dockerfile .")
-//                     costomImage.push()
-//                     costomImage.push 'latest'
-//                 }
-//                 }
-//              }
-//           }
-//         }
-//     }
-// }
-
-
-
-
-
                 script {
-                        def customImage = docker.build("my-image:${env.BUILD_ID}", "-f nginx/Dockerfile .")
-                    }
-            }
-         
-        }
-        stage('Run step') { 
-            steps {
-                script {
-                    sh "docker run -tid -p 80:80 my-image:${env.BUILD_ID}"
-
-                  }  
+                withCredentials([string(credentialsId: 'docker_user', verible: 'DOCKER_USER'),
+                                 string(credentialsId: 'docker_pass', verible: 'DOCKER_PASS')]) {
+                sh "echo ${DOCKER_PASS} | docker login --username ${DOCKER_USER} --password-stdin"
+                docker.withRegistry("https://index.docker.io/v1/") {
+                    def customImage = docker.build("${DOCKER_USER}/my-image:${env.BUILD_ID}", "-f nginx/Dockerfile .")
+                    costomImage.push()
+                    costomImage.push 'latest'
+                }
+                }
              }
+          }
         }
     }
 }
+
+
+
+
+
+//                 script {
+//                         def customImage = docker.build("my-image:${env.BUILD_ID}", "-f nginx/Dockerfile .")
+//                     }
+//             }
+         
+//         }
+//         stage('Run step') { 
+//             steps {
+//                 script {
+//                     sh "docker run -tid -p 80:80 my-image:${env.BUILD_ID}"
+
+//                   }  
+//              }
+//         }
+//     }
+// }
