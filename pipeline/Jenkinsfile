@@ -2,6 +2,7 @@ pipeline {
     agent any 
     stages {
         stage('Build') { 
+
             steps {
                 script {
                 withCredentials([string(credentialsId: 'docker_user', verible: 'DOCKER_USER'),
@@ -15,7 +16,7 @@ pipeline {
                 }
              }
           }
-        }
+     }
     }
 }
 
