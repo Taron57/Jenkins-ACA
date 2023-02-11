@@ -1,8 +1,8 @@
 pipeline {
     agent any 
     environment { 
-3        DOCKER_USER = 'docker_user' 
-4        DOCKER_PASS = 'docker_pass'
+3        docker_user = 'DOCKER_USER'
+4        docker_pass = 'DOCKER_PASS'
 6    }
     stages {
        stage('build step') { 
