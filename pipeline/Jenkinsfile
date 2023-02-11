@@ -1,10 +1,12 @@
 pipeline {
     agent any 
-//     environment { 
-// 3        docker_user = 'DOCKER_USER'
-// 4        docker_pass = 'DOCKER_PASS'
-// 6    }
-     stages {
+
+    properties([
+    parameters([
+        credentials(name: 'docker_user', credentialType: 'org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl', required: true)
+    ])
+])
+    stages {
         stage('build step') { 
             steps {
                script {
