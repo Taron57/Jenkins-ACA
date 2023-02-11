@@ -1,12 +1,12 @@
 pipeline {
     agent any 
 
-    properties([
-    parameters([
-        credentials(name: 'docker_user', credentialType: 'org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl', required: true)
-        credentials(name: 'docker_pass', credentialType: 'org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl', required: true)
-    ])
-])
+//     properties([
+//     parameters([
+//         credentials(name: 'docker_user', credentialType: 'org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl', required: true)
+//         credentials(name: 'docker_pass', credentialType: 'org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl', required: true)
+//     ])
+// ])
     stages {
         stage('build step') { 
             steps {
