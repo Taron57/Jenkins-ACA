@@ -4,9 +4,9 @@ pipeline {
 // 3        docker_user = 'DOCKER_USER'
 // 4        docker_pass = 'DOCKER_PASS'
 // 6    }
-    stages {
-       stage('build step') { 
-           steps {
+     stages {
+        stage('build step') { 
+            steps {
                script {
 
                withCredentials([string(credentialsId: 'docker_user', verible: 'DOCKER_USER'),
