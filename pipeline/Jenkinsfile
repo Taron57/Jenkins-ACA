@@ -3,18 +3,18 @@ pipeline {
     stages {
             stage('build step') { 
                 steps {
-    //             script {
-    //             withCredentials([string(credentialsId: 'docker_user', verible: 'DOCKER_USER'),
-    //                             string(credentialsId: 'docker_pass', verible: 'DOCKER_PASS')]) {
-    //             sh "echo ${DOCKER_PASS} | docker login --username ${DOCKER_USER} --password-stdin ${DOCKER_PASS}"
-    //             docker.withRegistry("https://index.docker.io/") {
-    //                def customImage = docker.build("${DOCKER_USER}/my-image:${env.BUILD_ID}", "-f nginx/Dockerfile .")
-    //                costomImage.push()
-    //                costomImage.push 'latest'
-    //             }
-    //         }
-    //     }    
-    // }
+                script {
+                withCredentials([string(credentialsId: 'docker_user', verible: 'DOCKER_USER'),
+                                string(credentialsId: 'docker_pass', verible: 'DOCKER_PASS')]) {
+                sh "echo ${DOCKER_PASS} | docker login --username ${DOCKER_USER} --password-stdin ${DOCKER_PASS}"
+                docker.withRegistry("https://index.docker.io/") {
+                   def customImage = docker.build("${DOCKER_USER}/my-image:${env.BUILD_ID}", "-f nginx/Dockerfile .")
+                   costomImage.push()
+                   costomImage.push 'latest'
+                }
+            }
+        }    
+    }
 
                 script {
                         def customImage = docker.build("my-image:${env.BUILD_ID}", "-f nginx/Dockerfile .")
@@ -31,4 +31,3 @@ pipeline {
              }
         }
     }
-}
