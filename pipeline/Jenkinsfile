@@ -1,36 +1,52 @@
 pipeline {
     agent any 
-
+    environment {
+		DOCKERHUB_CREDENTIALS=credentials('jenkins_credentials')
+	}
+            stage('Build docker image') {
+                 steps {  
+                     sh 'docker build -t taron57/my-image:$BUILD_NUMBER .'
+                   }
+             }
+             stage('login to dockerhub') {
+                 steps{
+                     sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                 }
+             }
+             stage('push image') {
+                 steps{
+                       sh 'docker push taron57/my-image:$BUILD_NUMBER'
+            }
+        }
+}
 //     properties([
 //     parameters([
 //         credentials(name: 'docker_user', credentialType: 'org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl', required: true)
 //         credentials(name: 'docker_pass', credentialType: 'org.jenkinsci.plugins.plaincredentials.impl.StringCredentialsImpl', required: true)
 //     ])
 // ])
-    stages {
-        stage('build step') { 
-            steps {
-               script {
-                
-                 withCredentials([usernameColonPassword(credentialsId: 'docker_user', variable: 'DOCKER_USER')]) {
-                  sh '''
-                  set +x
-                  curl -u "$DOCKER_USER" https://index.docker.io/ > output
-                 '''
-                  }
-                // withCredentials([string(credentialsId: 'docker_user', verible: 'DOCKER_USER'),
-                //                 string(credentialsId: 'docker_pass', verible: 'DOCKER_PASS')]) {
-                sh "echo ${DOCKER_PASS} | docker login --username ${DOCKER_USER} --password-stdin ${DOCKER_PASS}"
-                docker.withRegistry("https://index.docker.io/") {
-                   def customImage = docker.build("${DOCKER_USER}/my-image:${env.BUILD_ID}", "-f nginx/Dockerfile .")
-                   costomImage.push()
-                   costomImage.push 'latest'
-                }
-                }
-             }
-         }
-      }
-   }
+    // stages {
+    //     stage('build step') { 
+    //         steps {
+    //            script {
+    //             // withCredentials([string(credentialsId: 'docker_user', verible: 'DOCKER_USER'),
+    //             //                 string(credentialsId: 'docker_pass', verible: 'DOCKER_PASS')]) {
+    //             sh "echo ${DOCKER_PASS} | docker login --username ${DOCKER_USER} --password-stdin ${DOCKER_PASS}"
+    //             docker.withRegistry("https://index.docker.io/") {
+    //                def customImage = docker.build("${DOCKER_USER}/my-image:${env.BUILD_ID}", "-f nginx/Dockerfile .")
+    //                costomImage.push()
+    //                costomImage.push 'latest'
+    //             }
+    //             }                //  withCredentials([usernameColonPassword(credentialsId: 'docker_user', variable: 'DOCKER_USER')]) {
+                //   sh '''
+                //   set +x
+                //   curl -u "$DOCKER_USER" https://index.docker.io/ > output
+                //  '''
+                //   }
+//              }
+//          }
+//       }
+//    }
 // }
 
 
