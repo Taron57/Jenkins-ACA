@@ -22,8 +22,8 @@ pipeline {
             }
          
         }
-        stage('Run step') { 
-            steps {
+            stage('Run step') { 
+                steps {
                 script {
                     sh "docker run -tid -p 80:80 my-image:${env.BUILD_ID}"
 
