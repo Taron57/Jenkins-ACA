@@ -4,6 +4,11 @@ pipeline {
 		DOCKERHUB_CREDENTIALS=credentials('jenkins_credentials')
 	}
     stages {
+            stage('SCM Checkout') {
+                steps{
+                git 'https://github.com/Taron57/Jenkins-ACA.git'
+            }
+        }
             stage('Build docker image') {
                  steps {  
                      sh 'docker build -t taron57/my-image:$BUILD_NUMBER .'
