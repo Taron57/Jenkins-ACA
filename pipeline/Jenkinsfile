@@ -1,34 +1,34 @@
 pipeline {
-  agent any 
-    environment {
-    DOCKERHUB_CREDENTIALS = credentials('jenkins_credentials')
-    }
-    stages { 
-        stage('SCM Checkout') {
-            steps{
-            git 'https://github.com/Taron57/Jenkins-ACA.git'
-            }
-        }
+    agent any 
+    stages {
+            stage('build step') { 
+                steps {
+    //             script {
+    //             withCredentials([string(credentialsId: 'docker_user', verible: 'DOCKER_USER'),
+    //                             string(credentialsId: 'docker_pass', verible: 'DOCKER_PASS')]) {
+    //             sh "echo ${DOCKER_PASS} | docker login --username ${DOCKER_USER} --password-stdin ${DOCKER_PASS}"
+    //             docker.withRegistry("https://index.docker.io/") {
+    //                def customImage = docker.build("${DOCKER_USER}/my-image:${env.BUILD_ID}", "-f nginx/Dockerfile .")
+    //                costomImage.push()
+    //                costomImage.push 'latest'
+    //             }
+    //         }
+    //     }    
+    // }
 
-        stage('Build docker image') {
-            steps {  
-                sh 'docker build -t taron57/my-image:$BUILD_NUMBER .'
+                script {
+                        def customImage = docker.build("my-image:${env.BUILD_ID}", "-f nginx/Dockerfile .")
+                    }
             }
+         
         }
-        stage('login to dockerhub') {
-            steps{
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-            }
+        stage('Run step') { 
+            steps {
+                script {
+                    sh "docker run -tid -p 80:80 my-image:${env.BUILD_ID}"
+
+                  }  
+             }
         }
-        stage('push image') {
-            steps{
-                sh 'docker push taron57/my-image:$BUILD_NUMBER'
-            }
-        }
-}
-post {
-        always {
-            sh 'docker logout'
-         }
-    } 
+    }
 }
