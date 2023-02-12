@@ -1,16 +1,6 @@
 pipeline {
     agent any 
     stages {
-         stage('Run step') { 
-             steps {
-             script {
-                sh "docker run -tid -p 80:80 my-image:${env.BUILD_ID}"
-
-                  }  
-             }
-        }
-    }
-
          stage('build step') { 
              steps {
              script {
@@ -32,12 +22,12 @@ pipeline {
             }
          
        }
-    //     stage('Run step') { 
-    //          steps {
-    //          script {
-    //             sh "docker run -tid -p 80:80 my-image:${env.BUILD_ID}"
+         stage('Run step') { 
+             steps {
+             script {
+                sh "docker run -tid -p 80:80 my-image:${env.BUILD_ID}"
 
-    //               }  
-    //          }
-    //     }
-    // }
+                  }  
+             }
+        }
+    }
