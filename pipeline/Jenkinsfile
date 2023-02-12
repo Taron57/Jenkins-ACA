@@ -1,9 +1,9 @@
 pipeline {
     agent any 
     stages {
-            stage('build step') { 
-                steps {
-                script {
+         stage('build step') { 
+             steps {
+             script {
                 withCredentials([string(credentialsId: 'docker_user', verible: 'DOCKER_USER'),
                                 string(credentialsId: 'docker_pass', verible: 'DOCKER_PASS')]) {
                 sh "echo ${DOCKER_PASS} | docker login --username ${DOCKER_USER} --password-stdin ${DOCKER_PASS}"
@@ -16,16 +16,16 @@ pipeline {
         }    
     }
 
-                script {
+             script {
                         def customImage = docker.build("my-image:${env.BUILD_ID}", "-f nginx/Dockerfile .")
                     }
             }
          
         }
-            stage('Run step') { 
-                steps {
-                script {
-                    sh "docker run -tid -p 80:80 my-image:${env.BUILD_ID}"
+        stage('Run step') { 
+             steps {
+             script {
+                sh "docker run -tid -p 80:80 my-image:${env.BUILD_ID}"
 
                   }  
              }
