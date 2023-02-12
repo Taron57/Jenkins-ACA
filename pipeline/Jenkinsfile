@@ -3,6 +3,7 @@ pipeline {
     environment {
 		DOCKERHUB_CREDENTIALS=credentials('jenkins_credentials')
 	}
+    stages {
             stage('Build docker image') {
                  steps {  
                      sh 'docker build -t taron57/my-image:$BUILD_NUMBER .'
@@ -18,6 +19,7 @@ pipeline {
                        sh 'docker push taron57/my-image:$BUILD_NUMBER'
             }
         }
+    }
 }
 //     properties([
 //     parameters([
